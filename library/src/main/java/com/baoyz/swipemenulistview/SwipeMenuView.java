@@ -2,10 +2,12 @@ package com.baoyz.swipemenulistview;
 
 import java.util.List;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,20 +45,41 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 		}
 	}
 
+	private static int dp2px(int dip, Context context){
+		float scale = context.getResources().getDisplayMetrics().density;
+		return Math.round(dip * scale + 0.5f);
+	}
+
 	private void addItem(SwipeMenuItem item, int id) {
 		LayoutParams params = new LayoutParams(item.getWidth(),
 				LayoutParams.MATCH_PARENT);
 		LinearLayout parent = new LinearLayout(getContext());
 		parent.setId(id);
-		parent.setGravity(Gravity.CENTER);
+		parent.setGravity(Gravity.TOP);
 		parent.setOrientation(LinearLayout.VERTICAL);
 		parent.setLayoutParams(params);
 		parent.setBackgroundDrawable(item.getBackground());
 		parent.setOnClickListener(this);
+
+
+		LinearLayout.LayoutParams params1=new LayoutParams(item.getWidth(),dp2px(10,mMenu.getContext()));
+		LinearLayout top=new LinearLayout(getContext());
+		top.setLayoutParams(params1);
+		top.setBackgroundColor(item.getTitleColor());
+		parent.addView(top);
+
+
 		addView(parent);
 
 		if (item.getIcon() != null) {
-			parent.addView(createIcon(item));
+			ImageView icon=createIcon(item);
+			LinearLayout.LayoutParams iparam=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			LinearLayout small=new LinearLayout(getContext());
+			small.setGravity(Gravity.CENTER);
+			small.setOrientation(LinearLayout.VERTICAL);
+			small.setLayoutParams(params);
+			small.addView(icon);
+			parent.addView(small);
 		}
 		if (!TextUtils.isEmpty(item.getTitle())) {
 			parent.addView(createTitle(item));
