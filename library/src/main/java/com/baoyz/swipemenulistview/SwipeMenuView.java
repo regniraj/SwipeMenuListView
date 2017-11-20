@@ -73,11 +73,13 @@ public class SwipeMenuView extends LinearLayout implements OnClickListener {
 
 		if (item.getIcon() != null) {
 			ImageView icon=createIcon(item);
-			LinearLayout.LayoutParams iparam=new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+			LinearLayout.LayoutParams iparam=new LayoutParams(dp2px(55,getContext()),dp2px(55,getContext()));
 			LinearLayout small=new LinearLayout(getContext());
 			small.setGravity(Gravity.CENTER);
 			small.setOrientation(LinearLayout.VERTICAL);
 			small.setLayoutParams(params);
+			icon.setLayoutParams(iparam);
 			small.addView(icon);
 			parent.addView(small);
 		}
